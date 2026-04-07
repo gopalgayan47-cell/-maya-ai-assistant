@@ -1,0 +1,78 @@
+import React, { useState, useEffect } from 'react';
+import { Mic, MicOff, Power, Share2, Sparkles } from 'lucide-react';
+
+const App = () => {
+  const [isActive, setIsActive] = useState(false);
+  const [status, setStatus] = useState('Offline');
+
+  const toggleMaya = () => {
+    if (!isActive) {
+      setIsActive(true);
+      setStatus('Maya is listening...');
+    } else {
+      setIsActive(false);
+      setStatus('Offline');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-between p-8 font-sans overflow-hidden">
+      {/* Header */}
+      <div className="w-full flex justify-between items-center opacity-50">
+        <div className="flex items-center gap-2">
+          <Sparkles size={16} className="text-pink-500" />
+          <span className="text-[10px] tracking-[4px] uppercase font-bold">Maya AI v3.1</span>
+        </div>
+        <Share2 size={18} />
+      </div>
+
+      {/* Center Interface */}
+      <div className="relative flex flex-col items-center">
+        {/* Animated Rings */}
+        <div className={`absolute w-64 h-64 rounded-full border border-pink-500/20 transition-all duration-1000 ${isActive ? 'scale-150 opacity-100 animate-pulse' : 'scale-100 opacity-0'}`} />
+        <div className={`absolute w-80 h-80 rounded-full border border-pink-500/10 transition-all duration-1000 delay-150 ${isActive ? 'scale-150 opacity-100 animate-ping' : 'scale-100 opacity-0'}`} />
+
+        {/* Main Button */}
+        <button 
+          onClick={toggleMaya}
+          className={`relative z-10 w-40 h-40 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl ${
+            isActive 
+            ? 'bg-pink-600 shadow-pink-500/40 scale-110' 
+            : 'bg-zinc-900 border border-white/5 hover:bg-zinc-800'
+          }`}
+        >
+          <Power size={60} className={`${isActive ? 'text-white' : 'text-zinc-700'}`} />
+          {isActive && (
+             <div className="absolute -bottom-2 flex gap-1">
+                <div className="w-1 h-4 bg-white animate-[bounce_1s_infinite]" />
+                <div className="w-1 h-8 bg-white animate-[bounce_0.8s_infinite]" />
+                <div className="w-1 h-5 bg-white animate-[bounce_1.2s_infinite]" />
+             </div>
+          )}
+        </button>
+
+        <div className="mt-12 text-center">
+          <h2 className={`text-4xl font-black tracking-tighter transition-all ${isActive ? 'text-pink-500' : 'text-zinc-800'}`}>
+            MAYA
+          </h2>
+          <p className={`text-xs mt-3 tracking-[2px] uppercase font-medium ${isActive ? 'text-pink-400' : 'text-zinc-600'}`}>
+            {status}
+          </p>
+        </div>
+      </div>
+
+      {/* Interaction Card */}
+      <div className="w-full max-w-sm bg-zinc-900/40 backdrop-blur-2xl border border-white/5 p-6 rounded-[32px] flex items-center justify-between">
+        <div className="flex flex-col gap-1">
+           <span className="text-[10px] text-zinc-500 uppercase tracking-widest">Voice Mode</span>
+           <span className="text-sm font-semibold text-zinc-300">24kHz PCM High-Res</span>
+        </div>
+        <div className={`p-4 rounded-2xl ${isActive ? 'bg-pink-500/10 text-pink-500' : 'bg-zinc-800 text-zinc-500'}`}>
+           {isActive ? <Mic size={24} /> : <MicOff size={24} />}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
